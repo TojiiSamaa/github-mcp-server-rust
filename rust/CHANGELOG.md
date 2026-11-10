@@ -7,14 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-
-- SECURITY, CONTRIBUTING, CHANGELOG and CODE_OF_CONDUCT documents.
-
-### Security
-
-- `POST /mcp` over HTTP now requires the `[webhook] api_token_env` Bearer token when it is set, and `ghmcp` refuses to listen on a non-loopback address without it.
-
 ## [0.1.0] - 2026-11-10  <!-- scan:ok -->
 
 First release: a Rust MCP server for GitHub that keeps the official tool schemas and adds extended administration, multi-account support, activity tracking and rules.
@@ -28,11 +20,16 @@ First release: a Rust MCP server for GitHub that keeps the official tool schemas
 - Activity journal, webhook receiver (`ghmcp serve`, HMAC SHA-256 signature check), activity API and SSE stream.
 - Rule engine, destinations, allow list, dashboard and periodic report.
 - `token_cmd` per account (command whose output is the token), run once per account and cached.
+- SECURITY, CONTRIBUTING, CHANGELOG and CODE_OF_CONDUCT documents.
 - Separate rules file (`rules_file`, `GHMCP_RULES`).
 - Copilot GraphQL features and native `get_diff`.
 - Skill, `AGENTS.md` and README; secrets guide.
 - Parity tests against the official server: schema snapshots, method and route per tool checked against the Go source, Go route extractor (`scripts/extraire-routes-go.mjs`), end-to-end test of `serve`, proof of test mode, skill-versus-`tools/list` check.
 - `scripts/scan-donnees.sh` (no real data in the repository) and a `.gitignore` covering tokens, keys and local data.
+
+### Security
+
+- `POST /mcp` over HTTP now requires the `[webhook] api_token_env` Bearer token when it is set, and `ghmcp` refuses to listen on a non-loopback address without it.
 
 ### Fixed
 
@@ -54,5 +51,5 @@ First release: a Rust MCP server for GitHub that keeps the official tool schemas
 - Route coverage threshold raised to 90 %; documented `CHOIX_REST` exceptions.
 - Secrets, README and skill re-read against the code.
 
-[Unreleased]: ../../compare/v0.1.0...HEAD
-[0.1.0]: ../../releases/tag/v0.1.0
+[Unreleased]: ../../compare/rust-v0.1.0...HEAD
+[0.1.0]: ../../releases/tag/rust-v0.1.0

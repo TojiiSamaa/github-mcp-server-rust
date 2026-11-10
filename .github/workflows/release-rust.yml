@@ -2,7 +2,7 @@ name: Release
 
 on:
   push:
-    tags: ["v*"]
+    tags: ["rust-v*"]   # les tags v* du fork sont ceux de la version Go
 
 permissions:
   contents: read
