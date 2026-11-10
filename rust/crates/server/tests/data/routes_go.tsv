@@ -1,0 +1,386 @@
+outil	methode_outil	verbe	route	source
+actions_get	get_workflow	GET	/repos/{owner}/{repo}/actions/workflows/{workflow_id}	actions.go:672
+actions_get	get_workflow_run	GET	/repos/{owner}/{repo}/actions/runs/{run_id}	actions.go:691
+actions_get	get_workflow_job	GET	/repos/{owner}/{repo}/actions/jobs/{job_id}	actions.go:705
+actions_get	download_workflow_run_artifact	GET	/repos/{owner}/{repo}/actions/artifacts/{artifact_id}/{archive_format}	actions.go:831
+actions_get	get_workflow_run_usage	GET	/repos/{owner}/{repo}/actions/runs/{run_id}/timing	actions.go:879
+actions_get	get_workflow_run_logs_url	GET	/repos/{owner}/{repo}/actions/runs/{run_id}/logs	actions.go:855
+actions_list	list_workflows	GET	/repos/{owner}/{repo}/actions/workflows	actions.go:728
+actions_list	list_workflow_runs	GET	/repos/{owner}/{repo}/actions/runs	actions.go:761
+actions_list	list_workflow_runs	GET	/repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs	actions.go:763
+actions_list	list_workflow_jobs	GET	/repos/{owner}/{repo}/actions/runs/{run_id}/jobs	actions.go:787
+actions_list	list_workflow_run_artifacts	GET	/repos/{owner}/{repo}/actions/runs/{run_id}/artifacts	actions.go:815
+actions_run_trigger	run_workflow	POST	/repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches	actions.go:904
+actions_run_trigger	rerun_workflow_run	POST	/repos/{owner}/{repo}/actions/runs/{run_id}/rerun	actions.go:939
+actions_run_trigger	rerun_failed_jobs	POST	/repos/{owner}/{repo}/actions/runs/{run_id}/rerun-failed-jobs	actions.go:961
+actions_run_trigger	cancel_workflow_run	POST	/repos/{owner}/{repo}/actions/runs/{run_id}/cancel	actions.go:983
+actions_run_trigger	delete_workflow_run_logs	DELETE	/repos/{owner}/{repo}/actions/runs/{run_id}/logs	actions.go:1007
+add_comment_to_pending_review		GRAPHQL	Viewer	pullrequests.go:2430
+add_comment_to_pending_review		GRAPHQL	Repository	pullrequests.go:2463
+add_comment_to_pending_review		GRAPHQL	AddPullRequestReviewThread	pullrequests.go:2361
+add_issue_comment		GET	/repos/{owner}/{repo}/issues/comments/{comment_id}	issues.go:1494
+add_issue_comment		POST	/repos/{owner}/{repo}/issues/comments/{comment_id}/reactions	issues.go:1508
+add_issue_comment		POST	/repos/{owner}/{repo}/issues/{issue_number}/reactions	issues.go:1519
+add_issue_comment		POST	/repos/{owner}/{repo}/issues/{issue_number}/comments	issues.go:1537
+add_issue_comment_reaction		POST	/repos/{owner}/{repo}/issues/comments/{comment_id}/reactions	issues_granular.go:1270
+add_issue_reaction		POST	/repos/{owner}/{repo}/issues/{issue_number}/reactions	issues_granular.go:1143
+add_pull_request_review_comment		GRAPHQL	Viewer	pullrequests.go:2430
+add_pull_request_review_comment		GRAPHQL	Repository	pullrequests.go:2463
+add_pull_request_review_comment		GRAPHQL	AddPullRequestReviewThread	pullrequests.go:2361
+add_pull_request_review_comment_reaction		POST	/repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions	pullrequests_granular.go:761
+add_reply_to_pull_request_comment		POST	/repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions	pullrequests.go:1344
+add_reply_to_pull_request_comment		POST	/repos/{owner}/{repo}/pulls/{pull_number}/comments	pullrequests.go:1358
+add_sub_issue		POST	/repos/{owner}/{repo}/issues/{issue_number}/sub_issues	issues.go:1825
+assign_copilot_to_issue		GRAPHQL	suggestedActorsQuery	copilot.go:268
+assign_copilot_to_issue		GRAPHQL	Repository	copilot.go:315
+assign_copilot_to_issue		PATCH	/repos/{owner}/{repo}/issues/{issue_number}	issues.go:3630
+assign_copilot_to_issue		PATCH	repos/{owner}/{repo}/issues/{issueNumber}	issues.go:3635
+assign_copilot_to_issue		DELETE	repos/{owner}/{repo}/issues/{issueNumber}/issue-field-values/{fieldID}	issues.go:3511
+assign_copilot_to_issue		GRAPHQL	Repository	issues.go:79
+assign_copilot_to_issue		GRAPHQL	ReopenIssue	issues.go:3559
+assign_copilot_to_issue		GRAPHQL	CloseIssue	issues.go:3589
+assign_copilot_to_issue		GRAPHQL	UpdateIssue	copilot.go:365
+assign_copilot_to_issue		GRAPHQL	Repository	copilot.go:128
+assign_copilot_to_issue_with_intent		GRAPHQL	suggestedActorsQuery	copilot.go:505
+assign_copilot_to_issue_with_intent		GRAPHQL	Repository	copilot.go:698
+assign_copilot_to_issue_with_intent		PATCH	/repos/{owner}/{repo}/issues/{issue_number}	issues.go:3630
+assign_copilot_to_issue_with_intent		PATCH	repos/{owner}/{repo}/issues/{issueNumber}	issues.go:3635
+assign_copilot_to_issue_with_intent		DELETE	repos/{owner}/{repo}/issues/{issueNumber}/issue-field-values/{fieldID}	issues.go:3511
+assign_copilot_to_issue_with_intent		GRAPHQL	Repository	issues.go:79
+assign_copilot_to_issue_with_intent		GRAPHQL	ReopenIssue	issues.go:3559
+assign_copilot_to_issue_with_intent		GRAPHQL	CloseIssue	issues.go:3589
+assign_copilot_to_issue_with_intent		GRAPHQL	UpdateIssue	copilot.go:765
+assign_copilot_to_issue_with_intent		GRAPHQL	Repository	copilot.go:128
+create_branch		GET	/repos/{owner}/{repo}	repositories.go:1588
+create_branch		GET	/repos/{owner}/{repo}/git/ref/{ref}	repositories.go:1602
+create_branch		POST	/repos/{owner}/{repo}/git/refs	repositories.go:1618
+create_gist		POST	/gists	gists.go:248
+create_issue		GRAPHQL	createIssueParentMetadataQuery	issues.go:3195
+create_issue		GRAPHQL	Repository	labels.go:503
+create_issue		GRAPHQL	User	issues.go:3214
+create_issue		GRAPHQL	Repository	issues.go:3237
+create_issue		GET	repos/{owner}/{repo}/issue-types	issues.go:3247
+create_issue		GRAPHQL	createIssueMutation	issues.go:3148
+create_issue		POST	/repos/{owner}/{repo}/issues	issues_granular.go:177
+create_or_update_file		GET	/repos/{owner}/{repo}/contents/{path}	repositories.go:564
+create_or_update_file		GET	/repos/{owner}/{repo}/git/trees/{tree_sha}	repositories_helper.go:311
+create_or_update_file		GET	/repos/{owner}/{repo}/git/blobs/{file_sha}	repositories_helper.go:239
+create_or_update_file		GET	/repos/{owner}/{repo}/contents/{path}	repositories.go:612
+create_or_update_file		PUT	/repos/{owner}/{repo}/contents/{path}	repositories.go:643
+create_pull_request		POST	/repos/{owner}/{repo}/pulls	pullrequests.go:855
+create_pull_request		POST	/repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers	pullrequests.go:880
+create_pull_request_review		GRAPHQL	Repository	pullrequests.go:2147
+create_pull_request_review		GRAPHQL	AddPullRequestReview	pullrequests.go:2178
+create_repository		?	Repositories.Create	repositories.go:738 plusieurs routes go-github: POST /orgs/{org}/repos | POST /user/repos
+create_repository_ruleset		POST	/repos/{owner}/{repo}/rulesets	rulesets.go:707
+create_repository_ruleset		POST	/orgs/{org}/rulesets	rulesets.go:720
+create_repository_ruleset		POST	/enterprises/{enterprise}/rulesets	rulesets.go:733
+custom_properties_read		GET	/repos/{owner}/{repo}/properties/values	custom_properties.go:103
+custom_properties_read		GET	orgs/{org}/properties/schema	custom_properties.go:406
+custom_properties_write		PATCH	/repos/{owner}/{repo}/properties/values	custom_properties.go:236
+custom_properties_write		GET	orgs/{org}/properties/schema	custom_properties.go:406
+custom_properties_write		PATCH	orgs/{org}/properties/schema	custom_properties.go:389
+delete_file		GET	/repos/{owner}/{repo}/git/ref/{ref}	repositories.go:1405
+delete_file		GET	/repos/{owner}/{repo}/git/commits/{commit_sha}	repositories.go:1412
+delete_file		POST	/repos/{owner}/{repo}/git/trees	repositories.go:1441
+delete_file		POST	/repos/{owner}/{repo}/git/commits	repositories.go:1465
+delete_file		PATCH	/repos/{owner}/{repo}/git/refs/{ref}	repositories.go:1485
+delete_pending_pull_request_review		GRAPHQL	Viewer	pullrequests.go:2430
+delete_pending_pull_request_review		GRAPHQL	Repository	pullrequests.go:2463
+delete_pending_pull_request_review		GRAPHQL	DeletePullRequestReview	pullrequests.go:2248
+discussion_comment_write	add	GRAPHQL	Repository	discussions.go:738
+discussion_comment_write	add	GRAPHQL	AddDiscussionComment	discussions.go:756
+discussion_comment_write	reply	GRAPHQL	Node	discussions.go:820
+discussion_comment_write	reply	GRAPHQL	Repository	discussions.go:842
+discussion_comment_write	reply	GRAPHQL	AddDiscussionComment	discussions.go:756
+discussion_comment_write	update	GRAPHQL	UpdateDiscussionComment	discussions.go:908
+discussion_comment_write	delete	GRAPHQL	DeleteDiscussionComment	discussions.go:944
+discussion_comment_write	mark_answer	GRAPHQL	MarkDiscussionCommentAsAnswer	discussions.go:978
+discussion_comment_write	unmark_answer	GRAPHQL	UnmarkDiscussionCommentAsAnswer	discussions.go:1011
+dismiss_notification		DELETE	/notifications/threads/{thread_id}	notifications.go:225
+dismiss_notification		PATCH	/notifications/threads/{thread_id}	notifications.go:227
+find_duplicate		GET	repos/{owner}/{repo}/issues/{issueNumber}/semantically_similar	find_duplicate.go:112
+fork_repository		POST	/repos/{owner}/{repo}/forks	repositories.go:1288
+get_code_quality_finding		GET	repos/{Owner}/{Repo}/code-quality/findings/{FindingNumber}	code_quality.go:67
+get_code_scanning_alert		GET	/repos/{owner}/{repo}/code-scanning/alerts/{alert_number}	code_scanning.go:66
+get_commit		GET	/repos/{owner}/{repo}/commits/{ref}	repositories.go:107
+get_dependabot_alert		GET	/repos/{owner}/{repo}/dependabot/alerts/{alert_number}	dependabot.go:67
+get_discussion		GRAPHQL	Repository	discussions.go:365
+get_discussion_comments		GRAPHQL	Repository	discussions.go:538
+get_file_blame		GRAPHQL	Repository	repositories.go:2902
+get_file_contents		GET	/repos/{owner}/{repo}	repositories_helper.go:575
+get_file_contents		GET	/repos/{owner}/{repo}/git/ref/{ref}	repositories_helper.go:587
+get_file_contents		GET	/repos/{owner}/{repo}/contents/{path}	repositories.go:1074
+get_file_contents		GET	/repos/{owner}/{repo}/git/trees/{tree_sha}	repositories_helper.go:366
+get_file_contents		GET	/repos/{owner}/{repo}/git/blobs/{file_sha}	repositories_helper.go:239
+get_file_contents		GET	/repos/{owner}/{repo}/git/trees/{tree_sha}	repositories_helper.go:311
+get_gist		GET	/gists/{gist_id}	gists.go:147
+get_global_security_advisory		GET	/advisories/{ghsa_id}	security_advisories.go:298
+get_job_logs		GET	/repos/{owner}/{repo}/actions/runs/{run_id}/jobs	actions.go:53
+get_job_logs		GET	/repos/{owner}/{repo}/actions/jobs/{job_id}/logs	actions.go:130
+get_label		GRAPHQL	Repository	labels.go:98
+get_latest_release		GET	/repos/{owner}/{repo}/releases/latest	repositories.go:2244
+get_me		GET	/user	context_tools.go:145
+get_notification_details		GET	/notifications/threads/{thread_id}	notifications.go:393
+get_release_by_tag		GET	/repos/{owner}/{repo}/releases/tags/{tag}	repositories.go:2329
+get_repository_tree		GET	/repos/{owner}/{repo}	git.go:112
+get_repository_tree		GET	/repos/{owner}/{repo}/git/trees/{tree_sha}	git.go:124
+get_secret_scanning_alert		GET	/repos/{owner}/{repo}/secret-scanning/alerts/{alert_number}	secret_scanning.go:67
+get_tag		GET	/repos/{owner}/{repo}/git/ref/{ref}	repositories.go:2016
+get_tag		GET	/repos/{owner}/{repo}/git/tags/{tag_sha}	repositories.go:2045
+get_team_members		GRAPHQL	Organization	context_tools.go:348
+get_teams		GET	/user	context_tools.go:228
+get_teams		GRAPHQL	User	context_tools.go:263
+issue_artifact_read	list	?	path	issue_artifacts.go:231 NewRequest non résolu
+issue_artifact_read	get	?	path	issue_artifacts.go:231 NewRequest non résolu
+issue_artifact_write	create	?	path	issue_artifacts.go:231 NewRequest non résolu
+issue_artifact_write	update	?	path	issue_artifacts.go:231 NewRequest non résolu
+issue_artifact_write	delete	?	path	issue_artifacts.go:231 NewRequest non résolu
+issue_dependency_read	get_blocked_by	GET	/repos/{owner}/{repo}/issues/{issue_number}/dependencies/blocked_by	issue_dependencies.go:112
+issue_dependency_read	get_blocking	GET	/repos/{owner}/{repo}/issues/{issue_number}/dependencies/blocking	issue_dependencies.go:136
+issue_dependency_write	add	POST	/repos/{owner}/{repo}/issues/{issue_number}/dependencies/blocked_by	issue_dependencies.go:358
+issue_dependency_write	remove	DELETE	/repos/{owner}/{repo}/issues/{issue_number}/dependencies/blocked_by/{issue_id}	issue_dependencies.go:373
+issue_read	get	GET	/repos/{owner}/{repo}/issues/{issue_number}	issues.go:915
+issue_read	get	GRAPHQL	issueReadEnrichmentQuery	issues.go:2473
+issue_read	get_comments	?	Issues.ListComments	issues.go:1033 plusieurs routes go-github: GET /repos/{owner}/{repo}/issues/comments | GET /repos/{owner}/{repo}/issues/{issue_number}/comments
+issue_read	get_sub_issues	GET	/repos/{owner}/{repo}/issues/{issue_number}/sub_issues	issues.go:1097
+issue_read	get_parent	GRAPHQL	Repository	issues.go:1207
+issue_read	get_labels	GRAPHQL	Repository	issues.go:1273
+issue_write	create	GRAPHQL	createIssueParentMetadataQuery	issues.go:3195
+issue_write	create	GRAPHQL	Repository	labels.go:503
+issue_write	create	GRAPHQL	User	issues.go:3214
+issue_write	create	GRAPHQL	Repository	issues.go:3237
+issue_write	create	GET	repos/{owner}/{repo}/issue-types	issues.go:3247
+issue_write	create	GRAPHQL	createIssueMutation	issues.go:3148
+issue_write	create	POST	/repos/{owner}/{repo}/issues	issues.go:3342
+issue_write	update	GRAPHQL	Repository	issues.go:427
+issue_write	update	PATCH	/repos/{owner}/{repo}/issues/{issue_number}	issues.go:3630
+issue_write	update	PATCH	repos/{owner}/{repo}/issues/{issueNumber}	issues.go:3635
+issue_write	update	DELETE	repos/{owner}/{repo}/issues/{issueNumber}/issue-field-values/{fieldID}	issues.go:3511
+issue_write	update	GRAPHQL	Repository	issues.go:79
+issue_write	update	GRAPHQL	ReopenIssue	issues.go:3559
+issue_write	update	GRAPHQL	CloseIssue	issues.go:3589
+label_write	create	GRAPHQL	Repository	labels.go:482
+label_write	create	GRAPHQL	CreateLabel	labels.go:392
+label_write	update	GRAPHQL	Repository	labels.go:503
+label_write	update	GRAPHQL	UpdateLabel	labels.go:435
+label_write	delete	GRAPHQL	Repository	labels.go:503
+label_write	delete	GRAPHQL	DeleteLabel	labels.go:458
+list_branches		GET	/repos/{owner}/{repo}/branches	repositories.go:407
+list_code_scanning_alerts		GET	/repos/{owner}/{repo}/code-scanning/alerts	code_scanning.go:164
+list_commits		GET	/repos/{owner}/{repo}/commits	repositories.go:294
+list_dependabot_alerts		GET	/repos/{owner}/{repo}/dependabot/alerts	dependabot.go:158
+list_discussion_categories		GRAPHQL	Repository	discussions.go:1100
+list_discussions		?	Query	discussions.go:248 nom GraphQL non résolu
+list_gists		?	Gists.List	gists.go:85 plusieurs routes go-github: GET /gists | GET /users/{username}/gists
+list_global_security_advisories		GET	/advisories	security_advisories.go:137
+list_issue_fields		GRAPHQL	issueFieldsRepoQuery	issue_fields.go:181
+list_issue_fields		GRAPHQL	issueFieldsOrgQuery	issue_fields.go:191
+list_issue_types		GET	repos/{owner}/{repo}/issue-types	issues.go:1340
+list_issue_types		GET	/orgs/{org}/issue-types	issues.go:1369
+list_issues		GRAPHQL	issueFieldsRepoQuery	issue_fields.go:181
+list_issues		GRAPHQL	issueFieldsOrgQuery	issue_fields.go:191
+list_issues		?	Query	issues.go:3965 nom GraphQL non résolu
+list_label		GRAPHQL	Repository	labels.go:232
+list_notifications		GET	/repos/{owner}/{repo}/notifications	notifications.go:136
+list_notifications		GET	/notifications	notifications.go:138
+list_org_repository_security_advisories		GET	/orgs/{org}/security-advisories	security_advisories.go:384
+list_pull_requests		GET	/repos/{owner}/{repo}/pulls	pullrequests.go:1617
+list_releases		GET	/repos/{owner}/{repo}/releases	repositories.go:2134
+list_repository_collaborators		GET	/repos/{owner}/{repo}/collaborators	repositories.go:3117
+list_repository_security_advisories		GET	/repos/{owner}/{repo}/security-advisories	security_advisories.go:232
+list_secret_scanning_alerts		GET	/repos/{owner}/{repo}/secret-scanning/alerts	secret_scanning.go:157
+list_starred_repositories		GET	/user/starred	repositories.go:2438
+list_starred_repositories		?	Activity.ListStarred	repositories.go:2441 plusieurs routes go-github: GET /user/starred | GET /users/{username}/starred
+list_tags		GET	/repos/{owner}/{repo}/tags	repositories.go:1923
+manage_notification_subscription		PUT	/notifications/threads/{thread_id}/subscription	notifications.go:492
+manage_notification_subscription		DELETE	/notifications/threads/{thread_id}/subscription	notifications.go:497
+manage_repository_notification_subscription		PUT	/repos/{owner}/{repo}/subscription	notifications.go:603
+manage_repository_notification_subscription		DELETE	/repos/{owner}/{repo}/subscription	notifications.go:608
+mark_all_notifications_read		PUT	/repos/{owner}/{repo}/notifications	notifications.go:327
+mark_all_notifications_read		PUT	/notifications	notifications.go:329
+merge_pull_request		PUT	/repos/{owner}/{repo}/pulls/{pull_number}/merge	pullrequests.go:1766
+projects_get	get_project	GET	/orgs/{org}/projectsV2/{project_number}	projects.go:1318
+projects_get	get_project	GET	/users/{username}/projectsV2/{project_number}	projects.go:1320
+projects_get	get_project_field	GET	/orgs/{org}/projectsV2/{project_number}/fields/{field_id}	projects.go:1372
+projects_get	get_project_field	GET	/users/{username}/projectsV2/{project_number}/fields/{field_id}	projects.go:1374
+projects_get	get_project_field	GET	/orgs/{org}/projectsV2/{project_number}	projects.go:1318
+projects_get	get_project_field	GET	/users/{username}/projectsV2/{project_number}	projects.go:1320
+projects_get	get_project_item	GRAPHQL	projectFieldsQueryOrg	projects_resolver.go:111
+projects_get	get_project_item	GRAPHQL	projectFieldsQueryUser	projects_resolver.go:117
+projects_get	get_project_item	GET	/orgs/{org}/projectsV2/{project_number}/items/{item_id}	projects.go:1441
+projects_get	get_project_item	GET	/users/{username}/projectsV2/{project_number}/items/{item_id}	projects.go:1443
+projects_get	get_project_item	GET	/orgs/{org}/projectsV2/{project_number}	projects.go:1318
+projects_get	get_project_item	GET	/users/{username}/projectsV2/{project_number}	projects.go:1320
+projects_get	get_project_status_update	?		projects.go case "get_project_status_update" introuvable
+projects_get	get_project_view	?		projects.go case "get_project_view" introuvable
+projects_list	list_projects	GET	/users/{username}/projectsV2	projects.go:1132
+projects_list	list_projects	GET	/orgs/{org}/projectsV2	projects.go:1143
+projects_list	list_projects	GET	/users/{username}/projectsV2	projects.go:1089
+projects_list	list_project_fields	GET	/orgs/{org}/projectsV2/{project_number}/fields	projects.go:1208
+projects_list	list_project_fields	GET	/users/{username}/projectsV2/{project_number}/fields	projects.go:1210
+projects_list	list_project_fields	GET	/orgs/{org}/projectsV2/{project_number}	projects.go:1318
+projects_list	list_project_fields	GET	/users/{username}/projectsV2/{project_number}	projects.go:1320
+projects_list	list_project_items	GRAPHQL	projectFieldsQueryOrg	projects_resolver.go:111
+projects_list	list_project_items	GRAPHQL	projectFieldsQueryUser	projects_resolver.go:117
+projects_list	list_project_items	GET	/orgs/{org}/projectsV2/{project_number}/items	projects.go:1284
+projects_list	list_project_items	GET	/users/{username}/projectsV2/{project_number}/items	projects.go:1286
+projects_list	list_project_items	GET	/orgs/{org}/projectsV2/{project_number}	projects.go:1318
+projects_list	list_project_items	GET	/users/{username}/projectsV2/{project_number}	projects.go:1320
+projects_list	list_project_status_updates	GRAPHQL	statusUpdatesOrgQuery	projects.go:1820
+projects_list	list_project_status_updates	GRAPHQL	statusUpdatesUserQuery	projects.go:1829
+projects_list	list_project_views	GRAPHQL	projectViewsOrgQuery	projects.go:1988
+projects_list	list_project_views	GRAPHQL	projectViewsUserQuery	projects.go:1994
+projects_write	add_project_item	GRAPHQL	Repository	projects.go:2573
+projects_write	add_project_item	GRAPHQL	Organization	projects.go:1619
+projects_write	add_project_item	GRAPHQL	User	projects.go:1626
+projects_write	add_project_item	GRAPHQL	AddProjectV2ItemByID	projects.go:1673
+projects_write	update_project_item	GRAPHQL	Organization	projects.go:1619
+projects_write	update_project_item	GRAPHQL	User	projects.go:1626
+projects_write	update_project_item	GRAPHQL	Repository	projects_resolver.go:527
+projects_write	update_project_item	GRAPHQL	projectFieldsQueryOrg	projects_resolver.go:111
+projects_write	update_project_item	GRAPHQL	projectFieldsQueryUser	projects_resolver.go:117
+projects_write	update_project_item	GRAPHQL	projectIssueFieldMetadataQueryOrg	projects_resolver.go:343
+projects_write	update_project_item	GRAPHQL	projectIssueFieldMetadataQueryUser	projects_resolver.go:347
+projects_write	update_project_item	GET	/orgs/{org}/projectsV2/{project_number}/items/{item_id}	projects.go:1441
+projects_write	update_project_item	GET	/users/{username}/projectsV2/{project_number}/items/{item_id}	projects.go:1443
+projects_write	update_project_item	GRAPHQL	setIssueFieldValueMutation	issues_granular.go:966
+projects_write	update_project_item	PATCH	/orgs/{org}/projectsV2/{project_number}/items/{item_id}	projects.go:1502
+projects_write	update_project_item	PATCH	/users/{username}/projectsV2/{project_number}/items/{item_id}	projects.go:1504
+projects_write	update_project_items	GRAPHQL	Organization	projects.go:1619
+projects_write	update_project_items	GRAPHQL	User	projects.go:1626
+projects_write	update_project_items	GRAPHQL	projectFieldsQueryOrg	projects_resolver.go:111
+projects_write	update_project_items	GRAPHQL	projectFieldsQueryUser	projects_resolver.go:117
+projects_write	update_project_items	GET	/orgs/{org}/projectsV2/{project_number}/items/{item_id}	projects_batch.go:710
+projects_write	update_project_items	GET	/users/{username}/projectsV2/{project_number}/items/{item_id}	projects_batch.go:712
+projects_write	update_project_items	GRAPHQL	Repository	projects_resolver.go:527
+projects_write	update_project_items	?	Mutate	projects_batch_mutation.go:103 nom GraphQL non résolu
+projects_write	delete_project_item	DELETE	/orgs/{org}/projectsV2/{project_number}/items/{item_id}	projects.go:1572
+projects_write	delete_project_item	DELETE	/users/{username}/projectsV2/{project_number}/items/{item_id}	projects.go:1574
+projects_write	create_project_status_update	GRAPHQL	Organization	projects.go:1619
+projects_write	create_project_status_update	GRAPHQL	User	projects.go:1626
+projects_write	create_project_status_update	GRAPHQL	CreateProjectV2StatusUpdate	projects.go:1760
+projects_write	create_project_view	GRAPHQL	projectFieldsQueryOrg	projects_resolver.go:111
+projects_write	create_project_view	GRAPHQL	projectFieldsQueryUser	projects_resolver.go:117
+projects_write	create_project_view	GRAPHQL	Organization	projects.go:1619
+projects_write	create_project_view	GRAPHQL	User	projects.go:1626
+projects_write	create_project_view	GRAPHQL	createProjectV2ViewMutation	projects.go:2161
+projects_write	create_project_view	GRAPHQL	updateProjectV2ViewMutation	projects.go:2176
+projects_write	create_project_view	GRAPHQL	DeleteProjectV2View	projects.go:2296
+projects_write	update_project_view	GRAPHQL	Organization	projects.go:1619
+projects_write	update_project_view	GRAPHQL	User	projects.go:1626
+projects_write	update_project_view	GRAPHQL	projectViewParentQuery	projects.go:2198
+projects_write	update_project_view	GRAPHQL	projectFieldsQueryOrg	projects_resolver.go:111
+projects_write	update_project_view	GRAPHQL	projectFieldsQueryUser	projects_resolver.go:117
+projects_write	update_project_view	GRAPHQL	updateProjectV2ViewMutation	projects.go:2278
+projects_write	delete_project_view	GRAPHQL	Organization	projects.go:1619
+projects_write	delete_project_view	GRAPHQL	User	projects.go:1626
+projects_write	delete_project_view	GRAPHQL	projectViewParentQuery	projects.go:2198
+projects_write	delete_project_view	GRAPHQL	DeleteProjectV2View	projects.go:2296
+projects_write	create_project	?		projects.go case "create_project" introuvable
+projects_write	create_iteration_field	GRAPHQL	Organization	projects.go:1619
+projects_write	create_iteration_field	GRAPHQL	User	projects.go:1626
+projects_write	create_iteration_field	GRAPHQL	CreateProjectV2Field	projects.go:2706
+projects_write	create_iteration_field	GRAPHQL	UpdateProjectV2Field	projects.go:2786
+pull_request_read	get	GET	/repos/{owner}/{repo}/pulls/{pull_number}	pullrequests.go:180
+pull_request_read	get_diff	GET	/repos/{owner}/{repo}/pulls/{pull_number}	pullrequests.go:252
+pull_request_read	get_status	GET	/repos/{owner}/{repo}/pulls/{pull_number}	pullrequests.go:287
+pull_request_read	get_status	GET	/repos/{owner}/{repo}/commits/{ref}/status	pullrequests.go:306
+pull_request_read	get_files	GET	/repos/{owner}/{repo}/pulls/{pull_number}/files	pullrequests.go:415
+pull_request_read	get_commits	GET	/repos/{owner}/{repo}/pulls/{pull_number}/commits	pullrequests.go:455
+pull_request_read	get_review_comments	GRAPHQL	reviewThreadsQuery	pullrequests.go:561
+pull_request_read	get_reviews	GET	/repos/{owner}/{repo}/pulls/{pull_number}/reviews	pullrequests.go:613
+pull_request_read	get_comments	?	Issues.ListComments	issues.go:1033 plusieurs routes go-github: GET /repos/{owner}/{repo}/issues/comments | GET /repos/{owner}/{repo}/issues/{issue_number}/comments
+pull_request_read	get_check_runs	GET	/repos/{owner}/{repo}/pulls/{pull_number}	pullrequests.go:340
+pull_request_read	get_check_runs	GET	/repos/{owner}/{repo}/commits/{ref}/check-runs	pullrequests.go:364
+pull_request_review_write	create	GRAPHQL	Repository	pullrequests.go:2147
+pull_request_review_write	create	GRAPHQL	AddPullRequestReview	pullrequests.go:2178
+pull_request_review_write	submit_pending	GRAPHQL	Viewer	pullrequests.go:2430
+pull_request_review_write	submit_pending	GRAPHQL	Repository	pullrequests.go:2463
+pull_request_review_write	submit_pending	GRAPHQL	SubmitPullRequestReview	pullrequests.go:2211
+pull_request_review_write	delete_pending	GRAPHQL	Viewer	pullrequests.go:2430
+pull_request_review_write	delete_pending	GRAPHQL	Repository	pullrequests.go:2463
+pull_request_review_write	delete_pending	GRAPHQL	DeletePullRequestReview	pullrequests.go:2248
+pull_request_review_write	resolve_thread	GRAPHQL	ResolveReviewThread	pullrequests.go:2297
+pull_request_review_write	resolve_thread	GRAPHQL	UnresolveReviewThread	pullrequests.go:2321
+pull_request_review_write	unresolve_thread	GRAPHQL	ResolveReviewThread	pullrequests.go:2297
+pull_request_review_write	unresolve_thread	GRAPHQL	UnresolveReviewThread	pullrequests.go:2321
+push_files		GET	/repos/{owner}/{repo}/git/ref/{ref}	repositories.go:1743
+push_files		GET	/repos/{owner}/{repo}	repositories_helper.go:575
+push_files		GET	/repos/{owner}/{repo}/git/ref/{ref}	repositories_helper.go:587
+push_files		POST	/repos/{owner}/{repo}/git/refs	repositories_helper.go:83
+push_files		GET	/repos/{owner}/{repo}/git/commits/{commit_sha}	repositories.go:1777
+push_files		GET	/repos/{owner}/{repo}	repositories_helper.go:25
+push_files		PUT	/repos/{owner}/{repo}/contents/{path}	repositories_helper.go:43
+push_files		GET	/repos/{owner}/{repo}/git/commits/{commit_sha}	repositories_helper.go:53
+push_files		GET	/repos/{owner}/{repo}/git/ref/{ref}	repositories_helper.go:62
+push_files		POST	/repos/{owner}/{repo}/git/trees	repositories.go:1809
+push_files		POST	/repos/{owner}/{repo}/git/commits	repositories.go:1827
+push_files		PATCH	/repos/{owner}/{repo}/git/refs/{ref}	repositories.go:1841
+remove_issue_comment_reaction		DELETE	/repos/{owner}/{repo}/issues/comments/{comment_id}/reactions/{reaction_id}	issues_granular.go:1334
+remove_issue_reaction		DELETE	/repos/{owner}/{repo}/issues/{issue_number}/reactions/{reaction_id}	issues_granular.go:1207
+remove_pull_request_review_comment_reaction		DELETE	/repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions/{reaction_id}	pullrequests_granular.go:830
+remove_sub_issue		DELETE	/repos/{owner}/{repo}/issues/{issue_number}/sub_issue	issues.go:1864
+repository_ruleset_read	get	GET	/repos/{owner}/{repo}/rulesets/{ruleset_id}	rulesets.go:370
+repository_ruleset_read	list	GET	/repos/{owner}/{repo}/rulesets	rulesets.go:390
+repository_ruleset_read	get_rules_for_branch	GET	/repos/{owner}/{repo}/rules/branches/{branch}	rulesets.go:408
+repository_ruleset_read	list_rule_suites	GET	repos/{owner}/{repo}/rulesets/rule-suites	rulesets.go:508
+repository_ruleset_read	get_rule_suite	GET	repos/{owner}/{repo}/rulesets/rule-suites/{ruleSuiteID}	rulesets.go:538
+reprioritize_sub_issue		PATCH	/repos/{owner}/{repo}/issues/{issue_number}/sub_issues/priority	issues.go:1919
+request_copilot_review		POST	/repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers	copilot.go:971
+request_copilot_review		GET	/repos/{owner}/{repo}	copilot.go:1022
+request_pull_request_reviewers		POST	/repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers	pullrequests_granular.go:305
+resolve_review_thread		GRAPHQL	ResolveReviewThread	pullrequests.go:2297
+resolve_review_thread		GRAPHQL	UnresolveReviewThread	pullrequests.go:2321
+search_code		GET	/search/code	search.go:325
+search_commits		GET	/search/commits	search.go:626
+search_issues		GET	/search/issues	issues.go:2547
+search_issues		GRAPHQL	searchIssuesNodesQuery	issues.go:2372
+search_orgs		GET	/search/users	search.go:432
+search_pull_requests		GET	/search/issues	search_utils.go:188
+search_repositories		GET	/search/repositories	search.go:83
+search_users		GET	/search/users	search.go:432
+set_issue_fields		GRAPHQL	Repository	issues.go:79
+set_issue_fields		GRAPHQL	setIssueFieldValueMutation	issues_granular.go:966
+star_repository		PUT	/user/starred/{owner}/{repo}	repositories.go:2554
+sub_issue_write		POST	/repos/{owner}/{repo}/issues/{issue_number}/sub_issues	issues.go:1825
+sub_issue_write		DELETE	/repos/{owner}/{repo}/issues/{issue_number}/sub_issue	issues.go:1864
+sub_issue_write		PATCH	/repos/{owner}/{repo}/issues/{issue_number}/sub_issues/priority	issues.go:1919
+submit_pending_pull_request_review		GRAPHQL	Viewer	pullrequests.go:2430
+submit_pending_pull_request_review		GRAPHQL	Repository	pullrequests.go:2463
+submit_pending_pull_request_review		GRAPHQL	SubmitPullRequestReview	pullrequests.go:2211
+ui_get	labels	GRAPHQL	Repository	ui_tools.go:148
+ui_get	assignees	GET	/repos/{owner}/{repo}/assignees	ui_tools.go:200
+ui_get	milestones	GET	/repos/{owner}/{repo}/milestones	ui_tools.go:257
+ui_get	issue_types	GET	/orgs/{org}/issue-types	ui_tools.go:309
+ui_get	branches	GET	/repos/{owner}/{repo}/branches	ui_tools.go:349
+ui_get	issue_fields	GRAPHQL	issueFieldsRepoQuery	issue_fields.go:181
+ui_get	issue_fields	GRAPHQL	issueFieldsOrgQuery	issue_fields.go:191
+ui_get	reviewers	GET	/repos/{owner}/{repo}/collaborators	ui_tools.go:487
+ui_get	reviewers	GET	/repos/{owner}/{repo}/teams	ui_tools.go:508
+unresolve_review_thread		GRAPHQL	ResolveReviewThread	pullrequests.go:2297
+unresolve_review_thread		GRAPHQL	UnresolveReviewThread	pullrequests.go:2321
+unstar_repository		DELETE	/user/starred/{owner}/{repo}	repositories.go:2620
+update_gist		PATCH	/gists/{gist_id}	gists.go:359
+update_issue_assignees		PATCH	repos/{owner}/{repo}/issues/{issueNumber}	issues_granular.go:308
+update_issue_body		PATCH	/repos/{owner}/{repo}/issues/{issue_number}	issues_granular.go:83
+update_issue_comment		PATCH	/repos/{owner}/{repo}/issues/comments/{comment_id}	issues.go:1654
+update_issue_labels		PATCH	repos/{owner}/{repo}/issues/{issueNumber}	issues_granular.go:443
+update_issue_milestone		PATCH	/repos/{owner}/{repo}/issues/{issue_number}	issues_granular.go:83
+update_issue_state		GET	/repos/{owner}/{repo}/issues/{issue_number}	issues_granular.go:713
+update_issue_state		PATCH	repos/{owner}/{repo}/issues/{issueNumber}	issues_granular.go:731
+update_issue_title		PATCH	/repos/{owner}/{repo}/issues/{issue_number}	issues_granular.go:83
+update_issue_type		PATCH	repos/{owner}/{repo}/issues/{issueNumber}	issues_granular.go:586
+update_pull_request		PATCH	/repos/{owner}/{repo}/pulls/{pull_number}	pullrequests.go:1090
+update_pull_request		GRAPHQL	Repository	pullrequests.go:1125
+update_pull_request		GRAPHQL	ConvertPullRequestToDraft	pullrequests.go:1148
+update_pull_request		GRAPHQL	MarkPullRequestReadyForReview	pullrequests.go:1165
+update_pull_request		POST	/repos/{owner}/{repo}/pulls/{pull_number}/requested_reviewers	pullrequests.go:1188
+update_pull_request		GET	/repos/{owner}/{repo}/pulls/{pull_number}	pullrequests.go:1217
+update_pull_request_body		PATCH	/repos/{owner}/{repo}/pulls/{pull_number}	pullrequests_granular.go:102
+update_pull_request_branch		PUT	/repos/{owner}/{repo}/pulls/{pull_number}/update-branch	pullrequests.go:1935
+update_pull_request_draft_state		GRAPHQL	Repository	pullrequests_granular.go:221
+update_pull_request_draft_state		GRAPHQL	ConvertPullRequestToDraft	pullrequests_granular.go:238
+update_pull_request_draft_state		GRAPHQL	MarkPullRequestReadyForReview	pullrequests_granular.go:254
+update_pull_request_state		PATCH	/repos/{owner}/{repo}/pulls/{pull_number}	pullrequests_granular.go:102
+update_pull_request_title		PATCH	/repos/{owner}/{repo}/pulls/{pull_number}	pullrequests_granular.go:102

@@ -1,0 +1,315 @@
+{
+ "custom_properties_write": {
+  "level": "repository",
+  "properties": [
+   {
+    "property_name": "p",
+    "value": "v"
+   }
+  ]
+ },
+ "projects_write": {
+  "items": [
+   {
+    "item_id": 1,
+    "updated_field": {
+     "id": 1,
+     "value": "x"
+    }
+   }
+  ],
+  "updated_field": {
+   "id": 1,
+   "value": "x"
+  },
+  "iterations": [],
+  "visible_fields": [],
+  "visible_field_names": [],
+  "filter": "x",
+  "start_date": "2026-01-01",
+  "target_date": "2026-02-01"
+ },
+ "projects_get": {
+  "fields": [],
+  "field_names": []
+ },
+ "projects_list": {
+  "fields": [],
+  "field_names": []
+ },
+ "issue_write": {
+  "issue_fields": [],
+  "assignees": [],
+  "labels": []
+ },
+ "add_issue_comment": {
+  "reaction": null,
+  "comment_id": null
+ },
+ "get_job_logs": {
+  "failed_only": false,
+  "job_id": 1
+ },
+ "list_notifications": {
+  "since": "2020-01-01T00:00:00Z",
+  "before": null
+ },
+ "mark_all_notifications_read": {
+  "lastReadAt": "2020-01-01T00:00:00Z"
+ },
+ "reprioritize_sub_issue": {
+  "before_id": null
+ },
+ "request_pull_request_reviewers": {
+  "reviewers": [
+   "u"
+  ]
+ },
+ "sub_issue_write": {
+  "method": "add"
+ },
+ "update_issue_state": {
+  "duplicate_of": null,
+  "state_reason": null
+ },
+ "update_issue_state/#v": [
+  {
+   "state": "closed",
+   "state_reason": "duplicate",
+   "duplicate_of": 2
+  }
+ ],
+ "list_issue_types/#v": [
+  {
+   "repo": null
+  }
+ ],
+ "push_files": {
+  "files": [
+   {
+    "path": "a",
+    "content": "b"
+   }
+  ]
+ },
+ "issue_write/update": {
+  "duplicate_of": null,
+  "state_reason": null,
+  "type": null
+ },
+ "create_issue": {
+  "parent_issue_number": null
+ },
+ "create_branch/#v": [
+  {
+   "from_branch": null
+  }
+ ],
+ "add_issue_comment/#v": [
+  {
+   "body": null,
+   "reaction": "+1",
+   "comment_id": 1
+  },
+  {
+   "body": null,
+   "reaction": "+1"
+  }
+ ],
+ "dismiss_notification/#v": [
+  {
+   "state": "done"
+  }
+ ],
+ "manage_notification_subscription/#v": [
+  {
+   "action": "delete"
+  }
+ ],
+ "manage_repository_notification_subscription/#v": [
+  {
+   "action": "delete"
+  }
+ ],
+ "list_notifications/#v": [
+  {
+   "owner": null,
+   "repo": null
+  }
+ ],
+ "mark_all_notifications_read/#v": [
+  {
+   "owner": null,
+   "repo": null
+  }
+ ],
+ "list_starred_repositories/#v": [
+  {
+   "username": null
+  }
+ ],
+ "get_teams/#v": [
+  {
+   "user": null
+  }
+ ],
+ "sub_issue_write/#v": [
+  {
+   "method": "remove"
+  },
+  {
+   "method": "reprioritize",
+   "before_id": null
+  }
+ ],
+ "create_repository_ruleset/#v": [
+  {
+   "level": "organization",
+   "org": "o"
+  },
+  {
+   "level": "enterprise",
+   "enterprise": "e"
+  }
+ ],
+ "create_pull_request/#v": [
+  {
+   "reviewers": [
+    "u"
+   ]
+  }
+ ],
+ "update_pull_request/#v": [
+  {
+   "reviewers": [
+    "u"
+   ]
+  }
+ ],
+ "get_job_logs/#v": [
+  {
+   "failed_only": true,
+   "job_id": null
+  }
+ ],
+ "repository_ruleset_read/get_rule_suite#v": [
+  {
+   "level": "organization",
+   "org": "o"
+  }
+ ],
+ "repository_ruleset_read/list_rule_suites#v": [
+  {
+   "level": "organization",
+   "org": "o"
+  }
+ ],
+ "projects_get/get_project#v": [
+  {
+   "owner_type": "org"
+  }
+ ],
+ "projects_get/get_project_field#v": [
+  {
+   "owner_type": "org"
+  }
+ ],
+ "projects_get/get_project_item#v": [
+  {
+   "owner_type": "org"
+  },
+  {
+   "owner_type": "org",
+   "fields": null,
+   "field_names": [
+    "Status"
+   ]
+  }
+ ],
+ "projects_list/list_projects#v": [
+  {
+   "owner_type": "org"
+  }
+ ],
+ "projects_list/list_project_fields#v": [
+  {
+   "owner_type": "org"
+  }
+ ],
+ "projects_list/list_project_items#v": [
+  {
+   "owner_type": "org"
+  },
+  {
+   "owner_type": "org",
+   "fields": null,
+   "field_names": [
+    "Status"
+   ]
+  }
+ ],
+ "projects_write/delete_project_item#v": [
+  {
+   "owner_type": "org"
+  }
+ ],
+ "projects_write/update_project_item#v": [
+  {
+   "owner_type": "org"
+  }
+ ],
+ "projects_write/update_project_items#v": [
+  {
+   "owner_type": "org"
+  }
+ ],
+ "get_repository_tree/#v": [
+  {
+   "tree_sha": null
+  }
+ ],
+ "create_or_update_file/#v": [
+  {
+   "sha": null
+  },
+  {
+   "path": "lien",
+   "branch": "b-lien",
+   "sha": "3333333333333333333333333333333333333333"
+  }
+ ],
+ "get_file_contents/#v": [
+  {
+   "sha": null,
+   "ref": null
+  },
+  {
+   "path": "gros-lien",
+   "sha": "1111111111111111111111111111111111111111",
+   "ref": null
+  }
+ ],
+ "custom_properties_read/#v": [
+  {
+   "level": "organization",
+   "org": "o"
+  }
+ ],
+ "custom_properties_write/#v": [
+  {
+   "level": "organization",
+   "org": "o",
+   "properties": [
+    {
+     "property_name": "p",
+     "value_type": "string"
+    }
+   ]
+  }
+ ],
+ "actions_list/list_workflow_runs#v": [
+  {
+   "resource_id": null
+  }
+ ]
+}

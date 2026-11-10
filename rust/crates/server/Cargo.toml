@@ -1,0 +1,38 @@
+[package]
+name = "ghmcp"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Serveur MCP GitHub en Rust : outils officiels + gestion étendue + multi-comptes + suivi d'activité."
+
+[lib]
+name = "ghmcp"
+path = "src/lib.rs"
+
+[[bin]]
+name = "ghmcp"
+path = "src/main.rs"
+
+[dependencies]
+ghmcp-core.workspace = true
+ghmcp-activity.workspace = true
+ghmcp-automation.workspace = true
+ghmcp-tools-repos.workspace = true
+ghmcp-tools-sgg.workspace = true
+ghmcp-tools-issues.workspace = true
+ghmcp-tools-pulls.workspace = true
+ghmcp-tools-adp.workspace = true
+ghmcp-tools-security.workspace = true
+ghmcp-ext-admin.workspace = true
+ghmcp-ext-hooks.workspace = true
+ghmcp-ext-platform.workspace = true
+ghmcp-permissions.workspace = true
+tokio.workspace = true
+serde_json.workspace = true
+axum.workspace = true
+futures.workspace = true
+
+[dev-dependencies]
+hmac.workspace = true
+sha2.workspace = true
+hex.workspace = true

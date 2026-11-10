@@ -1,0 +1,60 @@
+# géré par profil-github (modeles-issues.mjs) : ne pas modifier à la main
+name: Bug
+description: Quelque chose ne fonctionne pas
+labels: ["bug", "à trier"]
+body:
+  - type: textarea
+    id: attendu
+    attributes:
+      label: "Comportement attendu"
+    validations:
+      required: true
+  - type: textarea
+    id: observe
+    attributes:
+      label: "Comportement observé"
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: "Étapes pour reproduire"
+      description: "Numérotées, la plus courte possible"
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: "Version du binaire"
+      description: "Version ou commit de ghmcp"
+    validations:
+      required: true
+  - type: input
+    id: cible
+    attributes:
+      label: "Version de GitHub"
+      description: "github.com ou GitHub Enterprise Server (version)"
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: "Système"
+      description: "Windows, Linux, conteneur…"
+    validations:
+      required: false
+  - type: input
+    id: outil
+    attributes:
+      label: "Outil ou commande concernée"
+      description: "Nom exact"
+    validations:
+      required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: "Journaux"
+      description: "Sans mot de passe ni jeton"
+      render: shell
+    validations:
+      required: false

@@ -1,0 +1,57 @@
+[workspace]
+resolver = "2"
+members = ["crates/*"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+rust-version = "1.80"
+
+# Toutes les dépendances du projet, résolues une fois dans Cargo.lock.
+# Les crates filles n'utilisent QUE `x.workspace = true` (jamais de version locale) :
+# ainsi Cargo.lock ne bouge pas quand un agent remplit sa crate.
+# reqwest est réservé à ghmcp-core (module net = egress unique).
+[workspace.dependencies]
+ghmcp-core = { path = "crates/core" }
+ghmcp-activity = { path = "crates/activity" }
+ghmcp-automation = { path = "crates/automation" }
+ghmcp-tools-repos = { path = "crates/tools-repos" }
+ghmcp-tools-sgg = { path = "crates/tools-sgg" }
+ghmcp-tools-issues = { path = "crates/tools-issues" }
+ghmcp-tools-pulls = { path = "crates/tools-pulls" }
+ghmcp-tools-adp = { path = "crates/tools-adp" }
+ghmcp-tools-security = { path = "crates/tools-security" }
+ghmcp-ext-admin = { path = "crates/ext-admin" }
+ghmcp-ext-hooks = { path = "crates/ext-hooks" }
+ghmcp-ext-platform = { path = "crates/ext-platform" }
+ghmcp-permissions = { path = "crates/permissions" }
+
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "sync", "time", "io-util", "io-std", "fs", "signal", "net", "process"] }
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "json"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["preserve_order"] }
+toml = "0.8"
+axum = { version = "0.8", default-features = false, features = ["tokio", "http1", "json", "query"] }
+chrono = { version = "0.4", default-features = false, features = ["clock", "std", "serde"] }
+futures = "0.3"
+tokio-stream = { version = "0.1", features = ["sync"] }
+rusqlite = { version = "0.32", features = ["bundled"] }
+hmac = "0.12"
+sha2 = "0.10"
+subtle = "2"
+hex = "0.4"
+jsonwebtoken = "9"
+crypto_box = { version = "0.9", features = ["seal"] }
+base64 = "0.22"
+urlencoding = "2"
+
+[profile.dev]
+debug = 0
+incremental = false
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+strip = true

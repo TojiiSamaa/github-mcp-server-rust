@@ -1,0 +1,28 @@
+[package]
+name = "ghmcp-automation"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Règles, destinations et actions sur les événements d activité"
+
+# Ne rien ajouter ici sans passer par l étage du dessus : toutes les dépendances sont déjà là (workspace).
+# reqwest est interdit hors de ghmcp-core (egress unique : ghmcp_core::net).
+[dependencies]
+ghmcp-core.workspace = true
+ghmcp-activity.workspace = true
+tokio.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+toml.workspace = true
+axum.workspace = true
+chrono.workspace = true
+futures.workspace = true
+tokio-stream.workspace = true
+rusqlite.workspace = true
+hmac.workspace = true
+sha2.workspace = true
+subtle.workspace = true
+hex.workspace = true
+crypto_box.workspace = true
+base64.workspace = true
+urlencoding.workspace = true

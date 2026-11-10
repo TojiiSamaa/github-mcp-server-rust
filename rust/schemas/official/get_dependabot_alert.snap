@@ -1,0 +1,207 @@
+{
+  "annotations": {
+    "idempotentHint": false,
+    "readOnlyHint": true,
+    "title": "Get dependabot alert"
+  },
+  "description": "Get details of a specific dependabot alert in a GitHub repository.",
+  "inputSchema": {
+    "properties": {
+      "alertNumber": {
+        "description": "The number of the alert.",
+        "type": "number"
+      },
+      "owner": {
+        "description": "The owner of the repository.",
+        "type": "string"
+      },
+      "repo": {
+        "description": "The name of the repository.",
+        "type": "string"
+      }
+    },
+    "required": [
+      "owner",
+      "repo",
+      "alertNumber"
+    ],
+    "type": "object"
+  },
+  "name": "get_dependabot_alert",
+  "outputSchema": {
+    "additionalProperties": false,
+    "properties": {
+      "dependency": {
+        "additionalProperties": false,
+        "properties": {
+          "manifest_path": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "package": {
+            "additionalProperties": false,
+            "properties": {
+              "ecosystem": {
+                "type": [
+                  "null",
+                  "string"
+                ]
+              },
+              "name": {
+                "type": [
+                  "null",
+                  "string"
+                ]
+              }
+            },
+            "type": [
+              "null",
+              "object"
+            ]
+          },
+          "scope": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        },
+        "type": [
+          "null",
+          "object"
+        ]
+      },
+      "dismissed_comment": {
+        "type": [
+          "null",
+          "string"
+        ]
+      },
+      "dismissed_reason": {
+        "type": [
+          "null",
+          "string"
+        ]
+      },
+      "html_url": {
+        "type": [
+          "null",
+          "string"
+        ]
+      },
+      "number": {
+        "type": [
+          "null",
+          "integer"
+        ]
+      },
+      "security_advisory": {
+        "additionalProperties": false,
+        "properties": {
+          "classification": {
+            "description": "GitHub advisory classification, such as malware or general.",
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "cve_id": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "description": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "ghsa_id": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "severity": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "summary": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        },
+        "type": [
+          "null",
+          "object"
+        ]
+      },
+      "security_vulnerability": {
+        "additionalProperties": false,
+        "properties": {
+          "first_patched_version": {
+            "description": "Earliest version fixing the affected package.",
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "package": {
+            "additionalProperties": false,
+            "properties": {
+              "ecosystem": {
+                "type": [
+                  "null",
+                  "string"
+                ]
+              },
+              "name": {
+                "type": [
+                  "null",
+                  "string"
+                ]
+              }
+            },
+            "type": [
+              "null",
+              "object"
+            ]
+          },
+          "severity": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "vulnerable_version_range": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        },
+        "type": [
+          "null",
+          "object"
+        ]
+      },
+      "state": {
+        "type": [
+          "null",
+          "string"
+        ]
+      }
+    },
+    "type": [
+      "null",
+      "object"
+    ]
+  }
+}

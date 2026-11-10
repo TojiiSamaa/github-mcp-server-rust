@@ -1,31 +1,37 @@
-Thanks for helping make GitHub safe for everyone.
+# Security Policy
 
-# Security
+## Reporting a vulnerability
 
-GitHub takes the security of our software products and services seriously, including all of the open source code repositories managed through our GitHub organizations, such as [GitHub](https://github.com/GitHub).
+**Do not open a public issue, discussion or pull request for a vulnerability.**
 
-Even though [open source repositories are outside of the scope of our bug bounty program](https://bounty.github.com/index.html#scope) and therefore not eligible for bounty rewards, we will ensure that your finding gets passed along to the appropriate maintainers for remediation. 
+Report it privately through GitHub Security Advisories of this repository: open the **Security** tab, then **Report a vulnerability** ([direct link](../../security/advisories/new)). Include:
 
-## Reporting Security Issues
+- the affected component (see Scope) and version or commit;
+- the configuration needed to reproduce (redact every token, secret and address: use `FAKE` tokens and documentation IP ranges);
+- step-by-step reproduction, proof of concept if possible;
+- the impact and how it could be exploited.
 
-If you believe you have found a security vulnerability in any GitHub-owned repository, please report it to us through coordinated disclosure.
+You will get an acknowledgement and a first assessment on a best-effort basis. Fixes are developed in the private advisory and published with it.
 
-**Please do not report security vulnerabilities through public GitHub issues, discussions, or pull requests.**
+## Supported versions
 
-Instead, please send an email to opensource-security[@]github.com.
+| Version | Supported |
+|---------|-----------|
+| latest release (0.1.x) | yes |
+| `main` branch | yes, fixes land here first |
+| anything older | no |
 
-Please include as much of the information listed below as you can to help us better understand and resolve the issue:
+## Scope
 
-  * The type of issue (e.g., buffer overflow, SQL injection, or cross-site scripting)
-  * Full paths of source file(s) related to the manifestation of the issue
-  * The location of the affected source code (tag/branch/commit or direct URL)
-  * Any special configuration required to reproduce the issue
-  * Step-by-step instructions to reproduce the issue
-  * Proof-of-concept or exploit code (if possible)
-  * Impact of the issue, including how an attacker might exploit the issue
+In scope:
 
-This information will help us triage your report more quickly.
+- **Tokens**: leakage of a GitHub token (logs, errors, responses, audit journal), wrong account used for a call, `token_env` / `token_file` / `token_cmd` resolution (see [`docs/secrets.md`](docs/secrets.md)).
+- **`ghmcp serve`**: webhook receiver (`POST /webhook`, `/webhook/{account}`): HMAC SHA-256 signature check, replay handling, the activity API and SSE stream, rule engine and destinations.
+- **`token_cmd`**: command injection, shell interpretation (it must run a program with arguments, never a shell), runaway or repeated execution.
+- **Test mode** (`--test` / `MCP_TEST_MODE=1`): any path that reaches the network or reads a secret while active.
 
-## Policy
+Out of scope: vulnerabilities in GitHub itself, in the MCP client, or in a secret manager used through `token_cmd`; a token you committed or shared yourself (revoke it); missing hardening of a deployment you control (reverse proxy, TLS, firewall).
 
-See [GitHub's Safe Harbor Policy](https://docs.github.com/en/site-policy/security-policies/github-bug-bounty-program-legal-safe-harbor#1-safe-harbor-terms)
+## Good practice for users
+
+Give each account the least-privileged token, set a webhook secret before exposing `serve` (without one the receiver refuses everything), and run `scripts/scan-donnees.sh` before publishing anything derived from this repository.

@@ -1,0 +1,24 @@
+# --- secrets et jetons : jamais versionnés ---
+.env
+.env.*
+*.local.toml
+*.secret*
+*.pem
+*.key
+*.p12
+token*.txt
+tokens/
+.tokens/
+secrets/
+app-token-cache*
+*.token
+# --- données locales ---
+activity.db
+activity.db-*
+*.sqlite*
+*.log
+target/
+# --- banc : binaires construits ---
+bench/.out/
+# --- motifs personnels du scan (scripts/scan-donnees.sh) ---
+.scan-noms.local

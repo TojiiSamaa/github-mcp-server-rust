@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  # Dossier du workspace Rust : « . » ici, « rust » dans le fork public (scripts/publier.sh le réécrit).
+  RUST_DIR: rust
+
+jobs:
+  build:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: ${{ env.RUST_DIR }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: ${{ env.RUST_DIR }}
+      - name: Build
+        run: cargo build --workspace --locked
+      - name: Tests (mode test, sans réseau GitHub)
+        run: cargo test --workspace --locked
+      - name: Skill et README contre tools/list
+        run: cargo test -p ghmcp --locked --test skill --test readme
+      - name: Clippy
+        run: cargo clippy --workspace --all-targets --locked -- -D warnings
+      - name: Format
+        run: cargo fmt --all --check
+
+  scan:
+    name: Secrets et données réelles
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: ${{ env.RUST_DIR }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # Binaire gitleaks (l'action officielle exige une licence hors dépôts personnels) ; somme de contrôle vérifiée.
+      - name: gitleaks sur tout l'historique
+        env:
+          GL_VERSION: 8.21.2
+        run: |
+          base="https://github.com/gitleaks/gitleaks/releases/download/v${GL_VERSION}"
+          curl -fsSL -O "${base}/gitleaks_${GL_VERSION}_linux_x64.tar.gz"
+          curl -fsSL -O "${base}/gitleaks_${GL_VERSION}_checksums.txt"
+          grep " gitleaks_${GL_VERSION}_linux_x64.tar.gz$" "gitleaks_${GL_VERSION}_checksums.txt" | sha256sum -c -
+          tar -xzf "gitleaks_${GL_VERSION}_linux_x64.tar.gz" gitleaks
+          ./gitleaks detect --source . --no-banner --redact --log-opts="--all -- ."
+      - name: Aucune donnée réelle
+        run: |
+          command -v rg > /dev/null || { sudo apt-get update -qq && sudo apt-get install -y -qq ripgrep; } > /dev/null
+          bash scripts/scan-donnees.sh

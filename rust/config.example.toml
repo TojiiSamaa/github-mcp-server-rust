@@ -1,0 +1,36 @@
+# Exemple FICTIF de configuration ghmcp. Copier hors du dépôt :
+#   Windows : %APPDATA%\ghmcp\config.toml   Linux/macOS : ~/.config/ghmcp/config.toml
+# ou passer --config <fichier> / GHMCP_CONFIG. Aucun secret ici : seulement où les lire.
+
+default_account = "alice-test"
+
+[[accounts]]
+name = "alice-test"
+kind = "classic"                 # classic | fine | app
+token_env = "GHMCP_ALICE_TOKEN"  # variable contenant ghp_FAKE...
+
+[[accounts]]
+name = "bob-ci"
+kind = "fine"
+token_file = "/chemin/vers/bob-ci.token"
+
+[[accounts]]
+name = "carol-cmd"
+kind = "fine"
+# Jeton lu sur la sortie d'une commande (programme + arguments, sans shell). Ordre : token_env > token_file > token_cmd.
+token_cmd = ["gestionnaire", "lire", "jeton-fictif"]
+
+[[accounts]]
+name = "robot-app"
+kind = "app"
+app_id = 123456
+installation_id = 7654321
+private_key_file = "/chemin/vers/robot-app.private-key.pem"
+# api_url = "https://ghe.example.invalid/api/v3"   # GitHub Enterprise Server (défaut : https://api.github.com)
+
+# Sections réservées, lues par leurs crates (format défini par elles) :
+# [webhook]       ext-hooks / activity : secret de signature, chemin d'écoute
+# [poller]        activity : relève périodique (notifications, PR, runs…)
+# [[rules]]       automation : quand tel événement -> telle destination / action
+# [destinations]  automation : webhooks sortants, commandes locales
+# [actions]       automation : actions GitHub déclenchées par les règles

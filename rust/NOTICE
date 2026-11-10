@@ -1,0 +1,3 @@
+schemas/official/*.snap : copiés de github/github-mcp-server (pkg/github/__toolsnaps__),
+Copyright (c) 2025 GitHub, licence MIT (texte complet : schemas/official/LICENSE-github-mcp-server).
+Ils servent de référence (description, schéma d'entrée, annotations) aux outils officiels portés en Rust.

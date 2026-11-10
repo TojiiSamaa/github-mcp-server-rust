@@ -1,0 +1,63 @@
+{
+  "annotations": {
+    "idempotentHint": false,
+    "readOnlyHint": true,
+    "title": "Get teams"
+  },
+  "description": "Get details of the teams the user is a member of. Limited to organizations accessible with current credentials",
+  "inputSchema": {
+    "properties": {
+      "user": {
+        "description": "Username to get teams for. If not provided, uses the authenticated user.",
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "name": "get_teams",
+  "outputSchema": {
+    "items": {
+      "additionalProperties": false,
+      "properties": {
+        "org": {
+          "type": "string"
+        },
+        "teams": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "slug": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "slug",
+              "description"
+            ],
+            "type": "object"
+          },
+          "type": [
+            "null",
+            "array"
+          ]
+        }
+      },
+      "required": [
+        "org",
+        "teams"
+      ],
+      "type": "object"
+    },
+    "type": [
+      "null",
+      "array"
+    ]
+  }
+}
