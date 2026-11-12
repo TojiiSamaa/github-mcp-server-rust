@@ -72,6 +72,12 @@ pub struct Config {
     pub rules_file: Option<PathBuf>,
     pub destinations: Option<toml::Value>,
     pub actions: Option<toml::Value>,
+    /// activity : envoi des issues des dépôts suivis à l'agent responsable via l'API du Centre.
+    pub dispatch: Option<toml::Value>,
+    /// serveur : `mode = "borne"` (défaut) ou `"libre"` ; voir crates/server/src/ecriture.rs.
+    pub ecriture: Option<toml::Value>,
+    /// permissions : `ghmcp_connecter` / `ghmcp_autotest` (Centre, propriétaire, dépôt de test) ; voir crates/permissions/src/connecter.rs.
+    pub connecter: Option<toml::Value>,
     /// Fichier d'où vient la config (None = défauts).
     #[serde(skip)]
     pub path: Option<PathBuf>,

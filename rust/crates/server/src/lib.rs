@@ -1,6 +1,8 @@
 //! Serveur MCP JSON-RPC 2.0 : registre des outils, session (stdio ou HTTP), élicitation.
 //! Protocole repris de netbox-mcp-server/rust/src/server.rs (même structure Session/dispatch).
 
+pub mod ecriture;
+
 use ghmcp_core::{Ctx, Elicit, GhError, Tool};
 use serde_json::{json, Value};
 use std::collections::HashMap;
@@ -146,7 +148,10 @@ impl Session {
                     .unwrap_or_else(|| json!({}));
                 let ctx = self.server.ctx.with_elicit(self.elicit_fn());
                 let start = Instant::now();
-                let r = (tool.handler)(ctx, args).await;
+                let r = match ecriture::verifier(&ctx, &tool, &args).await {
+                    Ok(()) => (tool.handler)(ctx, args).await,
+                    Err(e) => Err(e),
+                };
                 ghmcp_core::stats::global().record(
                     name,
                     r.as_ref().err(),

@@ -34,7 +34,7 @@ Agents: read [`rust/skill/github-mcp-rust/SKILL.md`](rust/skill/github-mcp-rust/
 
 ## Contents
 
-[Installation](#installation) · [Configuration](#configuration) · [Use with a client](#use-with-a-client) · [Tools](#tools-234) · [Permissions](#permissions-and-token-setup) · [Webhooks and `serve`](#webhooks-and-serve) · [Rules](#rules-and-destinations) · [Test mode](#test-mode) · [Statistics](#statistics) · [Security](#security) · [Limits](#limits-what-it-cannot-do) · [FAQ](#faq) · [Development](#development) · [Licenses](#licenses)
+[Installation](#installation) · [Configuration](#configuration) · [Use with a client](#use-with-a-client) · [Tools](#tools-236) · [Permissions](#permissions-and-token-setup) · [Webhooks and `serve`](#webhooks-and-serve) · [Rules](#rules-and-destinations) · [Test mode](#test-mode) · [Statistics](#statistics) · [Security](#security) · [Limits](#limits-what-it-cannot-do) · [FAQ](#faq) · [Development](#development) · [Licenses](#licenses)
 
 ## Installation
 
@@ -195,7 +195,7 @@ With only one account and no file: `"env": { "GITHUB_PERSONAL_ACCESS_TOKEN": "..
 | `ghmcp gen-skill [FILE]` | rewrites the tool block of the skill from the real registry |
 | `--config FILE`, `--test` | config file, test mode (also `GHMCP_CONFIG`, `MCP_TEST_MODE=1`) |
 
-## Tools (234)
+## Tools (236)
 
 Exact content of `tools/list` (checked against the binary in test mode). The 133 tools without the `gh_` prefix are the official ones, same schema; the 101 `gh_*` tools are the extensions. For every tool the parameters, the scope or permission it needs and whether it asks a human first are in [`rust/skill/github-mcp-rust/SKILL.md`](rust/skill/github-mcp-rust/SKILL.md), with a call example each.
 
@@ -254,7 +254,7 @@ Exact content of `tools/list` (checked against the binary in test mode). The 133
 `gh_vulnerability_alerts_get`, `gh_vulnerability_alerts_set`, `gh_dependabot_security_updates_get`, `gh_dependabot_security_updates_set`, `gh_code_scanning_default_setup_get`, `gh_code_scanning_default_setup_set`, `gh_dependabot_alert_update`, `gh_secret_scanning_alert_update`, `gh_code_scanning_alert_update`, `gh_repo_security_analysis_set`
 
 **Permissions, activity, statistics (extension)**
-`gh_permissions_schema`, `gh_account_audit`, `gh_setup_urls`, `gh_activity_feed`, `gh_watch`, `gh_pr_dashboard`, `gh_stats`
+`gh_permissions_schema`, `gh_account_audit`, `gh_setup_urls`, `ghmcp_connecter`, `ghmcp_autotest`, `gh_activity_feed`, `gh_watch`, `gh_qui_a_deploye`, `gh_registre`, `gh_pr_dashboard`, `gh_stats`
 
 Several official tools take a `method` that picks the operation (`actions_list`, `actions_get`, `actions_run_trigger`, `issue_read`, `issue_write`, `projects_list`, `projects_get`, `projects_write`); the exact values are in the skill. An unknown `method` answers `unknown method: <value>`.
 
@@ -267,6 +267,8 @@ Every tool declares the level it needs (`lecture`, `dev`, `cicd`, `securite`, `a
 3. Store the token as described in [Tokens](#tokens), never in the TOML.
 4. `gh_account_audit` checks what the token allows and what is missing.
 
+`ghmcp_autotest` checks every system ghmcp needs (accounts, vault, Centre, webhook secret, public address) with real reads and a bounded write undone at once on a test repository. `ghmcp_connecter` lists the same systems and, for a missing token, returns a pre-filled creation URL plus a deposit page: the human pastes the token there (never in a chat), it goes to the vault, and the page shows a one-time code that the agent passes back to `ghmcp_connecter` to reload and re-test the account. Configuration: `[connecter]` in `config.example.toml`.
+
 A 403 or 404 on a tool: compare the scopes of its row in the skill with the audit.
 
 ## Webhooks and `serve`
@@ -277,6 +279,9 @@ A 403 or 404 on a tool: compare the scopes of its row in the skill with the audi
 - Events go into a SQLite journal (`--db`, default `activity.db` next to the config) and onto the in-process bus that feeds the rules.
 - `GET /api/events` (filter by account, repository, type, period, limit), `GET /api/watches` (followed repositories), `GET /api/stream` (live Server-Sent Events). If `[webhook] api_token_env` is set, `Authorization: Bearer <token>` is required on `/api/*` and on `POST /mcp`.
 - `[poller]` adds a periodic poll (invitations, notifications, failed runs of followed repositories) that completes the webhooks.
+- Traceability registry: every event also feeds an agent ↔ commit ↔ PR ↔ issue ↔ deployment registry. The agent is read from an `Agent-Id: <id>` trailer (commit message, PR or issue body, deployment description) or an `agent:<id>` label. `gh_qui_a_deploye` answers "who deployed what" per repository and environment; `gh_registre` returns the full record of an agent, a commit, a PR or an issue.
+- Dispatch (`[dispatch]`): an issue opened or commented on a followed repository is sent, with its whole thread, to the agent responsible for it through the control-center API (resume its session, or start one in the repository's folder). The thread is framed as untrusted third-party data, never as instructions; comments signed `Agent-Id`, bots and more than 10 sends per issue and hour are ignored.
+- Bounded writes (default, `[ecriture] mode = "libre"` to lift): creating a branch, pushing to a work branch and opening a PR are allowed; merging, any deletion, writing to the default branch, dispatching a workflow and every write of a cicd, security or admin level tool (branch protection, rulesets, variables, secrets, environments, deployments, hooks, settings) are refused before any GitHub call. Merging is done by the CI (`fusion-auto` once every gate is green).
 - Related tools: `gh_activity_feed` (read the journal), `gh_watch` (follow a repository or PR), `gh_pr_dashboard` (CI, reviews and conflicts of each followed PR), and `gh_repo_hook*` / `gh_org_hook*` to create the webhook on GitHub pointing at `/webhook`.
 
 ```toml
@@ -286,6 +291,12 @@ api_token_env = "GHMCP_API_TOKEN"     # optional
 
 [poller]
 interval_secs = 300
+
+[dispatch]                            # optional
+centre_url = "http://centre.example.invalid:8796"
+token_env = "CENTRE_API_TOKEN"
+[dispatch.repos."example-org/example-repo"]
+dossier = "/srv/code/example-repo"     # new session here when no agent is known yet
 ```
 
 ## Rules and destinations
@@ -356,7 +367,7 @@ invitation_allow = ["example-org"]
 
 **Is it a drop-in replacement for the official server?** For the 133 official tools, yes: names and input schemas are checked against the official snapshots (`crates/server/tests/parity.rs`) and the method and route of each tool against the Go source (`routes.rs`). Install it with the same single token variable and nothing changes for the client.
 
-**Why 234 tools and not 133?** The 101 `gh_*` tools cover administration, webhooks, packages, Pages, environments, security settings, token setup and the activity features.
+**Why 236 tools and not 133?** The 103 `gh_*` tools cover administration, webhooks, packages, Pages, environments, security settings, token setup and the activity features.
 
 **Can I give an agent read-only access?** Create a token with only the read level (`gh_setup_urls` with `level = "lecture"`). The tools that need more fail with the GitHub error, and sensitive writes need a human anyway.
 

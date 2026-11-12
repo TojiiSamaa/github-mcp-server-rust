@@ -91,7 +91,8 @@ fn noms_uniques_et_prefixes() {
     for t in &tools {
         assert!(seen.insert(t.name.clone()), "doublon: {}", t.name);
         assert!(
-            t.is_official() || t.name.starts_with("gh_"),
+            // ghmcp_ = outils du MCP lui-même (connecter, autotest)
+            t.is_official() || t.name.starts_with("gh_") || t.name.starts_with("ghmcp_"),
             "outil étendu sans préfixe gh_: {}",
             t.name
         );

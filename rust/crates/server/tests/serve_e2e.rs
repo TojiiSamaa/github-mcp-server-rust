@@ -164,6 +164,7 @@ fn serve_webhooks_signes_journal_feed_sse_destination() {
         .unwrap();
     let _guard = Guard(child, dir.clone());
     wait_for("le serveur écoute", || up(port));
+    assert_eq!(http(port, "GET", "/healthz", &[], ""), (200, "ok".into()));
 
     // SSE ouvert AVANT les envois ; les lignes arrivent par un canal lu avec délai borné.
     let (tx, rx) = mpsc::channel::<String>();

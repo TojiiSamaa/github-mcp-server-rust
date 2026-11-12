@@ -34,3 +34,24 @@ private_key_file = "/chemin/vers/robot-app.private-key.pem"
 # [[rules]]       automation : quand tel événement -> telle destination / action
 # [destinations]  automation : webhooks sortants, commandes locales
 # [actions]       automation : actions GitHub déclenchées par les règles
+# [dispatch]      activity : issue ouverte / commentée sur un dépôt suivi -> agent responsable via l'API du Centre
+# [ecriture]      server : écriture bornée (défaut) ; mode = "libre" lève la borne
+# [connecter]     permissions : ghmcp_connecter / ghmcp_autotest (Centre, propriétaire, dépôt de test)
+
+# [dispatch]
+# centre_url = "http://centre.example.invalid:8796"   # ou centre_url_env = "NOM_DE_VARIABLE"
+# token_env = "CENTRE_API_TOKEN"                       # jeton Bearer du Centre (variable, jamais en clair)
+# defaut_agent = "agent-de-garde"                      # facultatif : session de repli
+# [dispatch.repos."example-org/example-repo"]
+# dossier = "/srv/code/example-repo"                   # nouvelle session ici si aucun agent n'est connu
+# agent = "session-id"                                 # facultatif : agent attitré du dépôt
+
+# [ecriture]
+# mode = "borne"   # "libre" : fusion, suppression et écriture sur la branche par défaut redeviennent possibles
+
+# [connecter]
+# centre_url = "http://centre.example.invalid:8796"   # ou centre_url_env = "NOM_DE_VARIABLE"
+# token_file = "/chemin/ghmcp-centre.jeton"           # ou token_env : Bearer propre à ghmcp (github_acces.py creer-jeton ghmcp)
+# proprietaire = "example-user"                        # login attendu de chaque jeton, propriétaire pré-rempli des jetons fins
+# depot_test = "example-user/ghmcp-autotest"           # sondes de lecture et écriture bornée (label, variable) : dépôt jetable
+# adresse_publique = "https://hooks.example.invalid"   # facultatif : récepteur de webhooks (listé, non sondé)

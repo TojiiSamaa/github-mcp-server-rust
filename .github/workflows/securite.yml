@@ -1,0 +1,33 @@
+name: Securite
+
+# Audit des crates (RustSec via cargo audit) et Trivy sur Cargo.lock (CRITICAL/HIGH corrigeable).
+# Tout tourne dans Docker sur les runners FYH (jamais sur le NAS). Échec = vulnérabilité connue à traiter.
+# - PR touchant Cargo.* ; tous les jours ; à la demande ; appelé par release-rust.yml (needs: securite).
+
+on:
+  pull_request:
+    paths: ["Cargo.toml", "Cargo.lock", "crates/**", ".github/workflows/securite.yml"]
+  schedule:
+    - cron: "20 6 * * *"
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: audit crates
+    if: ${{ github.event.repository.private && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
+    runs-on: [self-hosted, fyh]
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: cargo audit (RustSec)
+        run: |
+          docker run --rm -v "$PWD":/w -w /w rust:1-bookworm sh -c \
+            'cargo install --locked cargo-audit >/dev/null 2>&1 && cargo audit'
+      - name: Trivy sur Cargo.lock (CRITICAL,HIGH corrigeable)
+        run: |
+          docker run --rm -v "$PWD":/w -w /w aquasec/trivy:latest fs \
+            --scanners vuln --severity CRITICAL,HIGH --ignore-unfixed --exit-code 1 Cargo.lock

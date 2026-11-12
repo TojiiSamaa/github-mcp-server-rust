@@ -1,8 +1,10 @@
 //! ghmcp-permissions : Outils gh_ : audit des permissions des comptes contre ctx.registry().
 //! Contrat : voir l en-tête AGENTS-CONTRAT de crates/core/src/lib.rs.
 //!
-//! Trois outils en lecture seule : `gh_permissions_schema`, `gh_account_audit`, `gh_setup_urls`.
+//! Trois outils en lecture seule (`gh_permissions_schema`, `gh_account_audit`, `gh_setup_urls`) + `ghmcp_connecter` / `ghmcp_autotest` (connecter.rs).
 //! Niveaux cumulatifs : le niveau N = union des besoins des outils de niveau <= N.
+
+mod connecter;
 
 use ghmcp_core::{arg_str, Access, Ctx, GhError, Kind, Level, Result, Tool, ToolMeta};
 use serde_json::{json, Map, Value};
@@ -447,6 +449,26 @@ pub fn tools() -> Vec<Tool> {
         )
         .annotations(ro)
         .level(Level::Lecture),
+        Tool::new(
+            "ghmcp_connecter",
+            "Systems ghmcp needs (GitHub accounts, Centre, vault, webhook secret, public address) with their state; for a missing token, a pre-filled GitHub creation URL plus the Centre page where the operator deposits it (never in a chat). With `code` (one-time code shown by that page): checks it with the Centre, reloads the account's token and re-runs its autotest.",
+            json!({"type": "object", "properties": {
+                "code": {"type": "string", "description": "One-time code shown by the deposit page (not a secret)."},
+                "compte": {"type": "string", "description": "Only this ghmcp account."}}}),
+            connecter::connecter,
+        )
+        .annotations(json!({"readOnlyHint": false, "destructiveHint": false, "openWorldHint": true}))
+        .level(Level::Lecture),
+        Tool::new(
+            "ghmcp_autotest",
+            "Check every connection and the real rights: harmless reads, then a bounded write undone at once on the test repo (label, Actions variable) when the level needs it; OK/KO per system with the cause.",
+            json!({"type": "object", "properties": {
+                "compte": {"type": "string", "description": "Only this ghmcp account."},
+                "ecriture": {"type": "boolean", "description": "Bounded write test on [connecter] depot_test (default true)."}}}),
+            connecter::autotest,
+        )
+        .annotations(json!({"readOnlyHint": false, "destructiveHint": false, "idempotentHint": true, "openWorldHint": true}))
+        .level(Level::Lecture),
     ]
 }
 
@@ -626,12 +648,21 @@ mod tests {
     }
 
     #[test]
-    fn trois_outils_en_lecture_seule() {
+    fn cinq_outils_dont_trois_en_lecture_seule() {
         let t = tools();
         assert_eq!(
             t.iter().map(|t| t.name.as_str()).collect::<Vec<_>>(),
-            ["gh_permissions_schema", "gh_account_audit", "gh_setup_urls"]
+            [
+                "gh_permissions_schema",
+                "gh_account_audit",
+                "gh_setup_urls",
+                "ghmcp_connecter",
+                "ghmcp_autotest"
+            ]
         );
-        assert!(t.iter().all(|t| t.annotations["readOnlyHint"] == true));
+        assert!(t[..3].iter().all(|t| t.annotations["readOnlyHint"] == true));
+        assert!(t[3..]
+            .iter()
+            .all(|t| t.annotations["destructiveHint"] == false));
     }
 }

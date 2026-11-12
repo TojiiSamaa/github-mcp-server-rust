@@ -554,7 +554,15 @@ fn unix_now() -> i64 {
         .unwrap_or(0)
 }
 
-fn read_secret(
+/// Oublie le jeton en cache d'un compte (nouveau jeton rangé dans le coffre) : la prochaine lecture relance token_cmd.
+pub async fn forget_token(a: &AccountCfg) {
+    if let (Some(cmd), Some(m)) = (&a.token_cmd, CMD_TOKENS.lock().await.as_mut()) {
+        m.remove(&cmd_key(&a.name, cmd));
+    }
+}
+
+/// Secret lu dans `env` (non vide) sinon `file` ; `what` nomme le secret dans l'erreur (jamais sa valeur).
+pub fn read_secret(
     account: &str,
     env: Option<&str>,
     file: Option<&PathBuf>,
@@ -662,6 +670,39 @@ pub async fn post_json(url: &str, body: &Value) -> Result<Value> {
         return Err(GhError::Http {
             status,
             message: text.chars().take(300).collect(),
+        });
+    }
+    Ok(serde_json::from_str(&text).unwrap_or(json!({ "status": status })))
+}
+
+static POSTS: Mutex<Vec<(String, Value)>> = Mutex::new(Vec::new());
+
+/// POST enregistrés en mode test par `post_json_bearer` (url, corps), sans le jeton.
+pub fn recorded_posts() -> Vec<(String, Value)> {
+    POSTS.lock().unwrap().clone()
+}
+
+/// POST JSON authentifié (`Authorization: Bearer`) vers un service à nous (API du Centre).
+/// Mode test : rien ne sort, l'appel est enregistré (`recorded_posts`) et la réponse simulée.
+pub async fn post_json_bearer(url: &str, token: Option<&str>, body: &Value) -> Result<Value> {
+    if is_test() {
+        POSTS.lock().unwrap().push((url.to_string(), body.clone()));
+        return Ok(json!({ "test_mode": true, "id": "session-test" }));
+    }
+    let mut req = client()?.post(url).json(body);
+    if let Some(t) = token {
+        req = req.bearer_auth(t);
+    }
+    let resp = req
+        .send()
+        .await
+        .map_err(|e| GhError::Network(crate::redact::redact(&e.to_string())))?;
+    let status = resp.status().as_u16();
+    let text = resp.text().await.unwrap_or_default();
+    if !(200..300).contains(&status) {
+        return Err(GhError::Http {
+            status,
+            message: crate::redact::redact(&text.chars().take(300).collect::<String>()),
         });
     }
     Ok(serde_json::from_str(&text).unwrap_or(json!({ "status": status })))

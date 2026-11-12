@@ -23,6 +23,10 @@ use std::sync::{Arc, Mutex, OnceLock};
 use subtle::ConstantTimeEq;
 use tokio_stream::wrappers::{errors::BroadcastStreamRecvError, BroadcastStream};
 
+pub mod dispatch;
+mod registre;
+pub use registre::agent_id;
+
 fn db_err(e: rusqlite::Error) -> GhError {
     GhError::Other(format!("base d'activité: {e}"))
 }
@@ -64,6 +68,7 @@ impl Store {
     pub fn open(path: &Path) -> Result<Store> {
         let conn = Connection::open(path).map_err(db_err)?;
         conn.execute_batch(SCHEMA).map_err(db_err)?;
+        conn.execute_batch(registre::SCHEMA).map_err(db_err)?;
         Ok(Store {
             conn: Mutex::new(conn),
         })
@@ -279,6 +284,12 @@ async fn webhook(
     let ev = normalize(&account, id, kind, payload);
     match state.store.insert(&ev) {
         Ok(true) => {
+            if let Err(e) = state.store.enregistrer(&ev) {
+                eprintln!("ghmcp: registre: {}", e.code());
+            }
+            // Hors du chemin de réponse : GitHub attend sa réponse en moins de 10 s.
+            let (st, e2) = (state.clone(), ev.clone());
+            tokio::spawn(async move { dispatch::traiter(&st, &e2).await });
             let _ = state.bus.send(ev); // aucun abonné = Err, sans importance
             StatusCode::ACCEPTED.into_response()
         }
@@ -331,6 +342,8 @@ struct WatchQ {
 pub fn router(state: State) -> axum::Router {
     let _ = STORE.set(state.store.clone());
     axum::Router::new()
+        // Sonde de vie (déploiement, supervision) : sans jeton, ne dit rien d'autre que « ok ».
+        .route("/healthz", get(|| async { "ok" }))
         .route(
             "/webhook",
             post(
@@ -451,6 +464,27 @@ async fn watch(ctx: Ctx, args: Value) -> Result<Value> {
     }
 }
 
+async fn qui_a_deploye(_ctx: Ctx, args: Value) -> Result<Value> {
+    let repo = arg_str(&args, "repo")
+        .filter(|r| r.split('/').count() == 2)
+        .ok_or_else(|| GhError::InvalidArgs("repo: `owner/repo` attendu".into()))?;
+    let d = store()?.qui_a_deploye(repo, arg_str(&args, "env"))?;
+    Ok(json!({ "repo": repo, "dernier": d.first(), "deploiements": d }))
+}
+
+async fn registre_fiche(_ctx: Ctx, args: Value) -> Result<Value> {
+    let (repo, agent, sha) = (
+        arg_str(&args, "repo"),
+        arg_str(&args, "agent"),
+        arg_str(&args, "sha"),
+    );
+    let numero = arg_i64(&args, "pr").or_else(|| arg_i64(&args, "issue"));
+    if repo.is_none() && agent.is_none() && sha.is_none() {
+        return Err(GhError::InvalidArgs("repo, agent ou sha requis".into()));
+    }
+    store()?.fiche(repo, agent, sha, numero)
+}
+
 /// Outils de cette crate, concaténés par le serveur dans `registry()`.
 pub fn tools() -> Vec<Tool> {
     vec![
@@ -474,5 +508,25 @@ pub fn tools() -> Vec<Tool> {
             watch,
         )
         .annotations(json!({"readOnlyHint": false, "destructiveHint": false})),
+        Tool::new(
+            "gh_qui_a_deploye",
+            "Qui a déployé quoi : derniers déploiements d'un dépôt (env optionnel) avec sha, commit, agent (trailer Agent-Id), PR et statut. Registre rempli par les webhooks de `ghmcp serve`.",
+            json!({"type":"object","properties":{
+                "repo":{"type":"string","description":"owner/repo"},
+                "env":{"type":"string","description":"environnement (production, staging…) ; absent = tous"}},"required":["repo"]}),
+            qui_a_deploye,
+        )
+        .annotations(json!({"readOnlyHint": true})),
+        Tool::new(
+            "gh_registre",
+            "Registre agent ↔ commit ↔ PR ↔ issue ↔ déploiement ↔ envois au Centre, filtré par dépôt, agent (Agent-Id), sha, PR ou issue.",
+            json!({"type":"object","properties":{
+                "repo":{"type":"string","description":"owner/repo"},
+                "agent":{"type":"string","description":"identifiant d'agent (trailer Agent-Id)"},
+                "sha":{"type":"string","description":"commit"},
+                "pr":{"type":"integer"},"issue":{"type":"integer"}}}),
+            registre_fiche,
+        )
+        .annotations(json!({"readOnlyHint": true})),
     ]
 }

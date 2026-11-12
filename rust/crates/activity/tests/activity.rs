@@ -234,7 +234,15 @@ async fn outils_et_suivi() {
     let (_addr, _store, bus) = serve().await; // pose le magasin des outils
     let t = tools();
     let names: Vec<_> = t.iter().map(|t| t.name.clone()).collect();
-    assert_eq!(names, ["gh_activity_feed", "gh_watch"]);
+    assert_eq!(
+        names,
+        [
+            "gh_activity_feed",
+            "gh_watch",
+            "gh_qui_a_deploye",
+            "gh_registre"
+        ]
+    );
     let ctx = Ctx::new(Arc::new(Config::from_toml(CFG).unwrap()), bus);
     let call = |i: usize, a: Value| (t[i].handler)(ctx.clone(), a);
     call(1, json!({"action":"add","repo":"o/r","pr":7}))

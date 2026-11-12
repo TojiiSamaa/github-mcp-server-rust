@@ -8,7 +8,7 @@
 # e-mails noreply / domaines d'exemple, et l'URL publique du dépôt (github.com/<compte>/github-mcp-server-rust).
 RACINE="$(cd "$(dirname "$0")/.." && pwd)"
 cd "${1:-$RACINE}" || exit 2
-EXCL=(--hidden -g '!target' -g '!Cargo.lock' -g '!schemas/official' -g '!.git' -g '!.scan-noms.local')
+EXCL=(--hidden -g '!target' -g '!Cargo.lock' -g '!schemas/official' -g '!.git' -g '!.scan-noms.local' -g '!.github/workflows/prod.yml')   # prod.yml (livraison privée) est retiré par publier.sh : il n'est jamais publié
 P_IP='\b((25[0-5]|2[0-4][0-9]|1?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]?[0-9])\b'
 P_MAC='\b([0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}\b'
 P_PATH='[A-Za-z]:[\\/]+Users[\\/]|/home/[a-z][a-z0-9_-]+|/Users/[A-Za-z]'
@@ -26,7 +26,8 @@ OUT=$(
   rg -n "${EXCL[@]}" "$P_TOK" . | rg -v -i 'fake'
   # l'URL publique du dépôt est retirée de la ligne avant de chercher les noms (le reste de la ligne compte)
   if [ -n "$NOMS" ]; then
-    rg -n -i "${EXCL[@]}" "$NOMS" . | sed -E 's#github\.com/[A-Za-z0-9-]+/github-mcp-server-rust##g' | rg -i "^[^:]+:[0-9]+:.*($NOMS)"
+    rg -n -i "${EXCL[@]}" "$NOMS" . | sed -E 's#github\.com/[A-Za-z0-9-]+/github-mcp-server-rust##g' | rg -i "^[^:]+:[0-9]+:.*($NOMS)" \
+      | rg -v 'uses: [A-Za-z0-9-]+/ci-deploy/|ghcr\.io/[a-z0-9-]+/github-mcp-rust'   # plomberie CI du circuit privé : référence d'un dépôt/image, pas une donnée personnelle
   fi
 )
 if [ -n "$OUT" ]; then echo "$OUT"; exit 1; fi

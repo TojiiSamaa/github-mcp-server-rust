@@ -1,0 +1,72 @@
+# fusion-auto : quand le workflow CI d'une PR finit VERT, fusion (squash) du commit testé puis release.
+# workflow_run exécute TOUJOURS la version de ce fichier présente sur la branche par défaut : une PR ne peut
+# ni le modifier ni l'affaiblir. Une PR qui touche la CI (.github/), le Dockerfile ou supprime un test n'est
+# jamais fusionnée ici : la porte qui l'a validée venait de la PR elle-même, la fusion revient à un humain.
+name: fusion
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fusion-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  fusion-auto:
+    if: >-
+      github.event.repository.private
+      && github.event.workflow_run.event == 'pull_request'
+      && github.event.workflow_run.conclusion == 'success'
+      && github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: [self-hosted, fyh]
+    timeout-minutes: 5
+    permissions: { contents: write, pull-requests: write }
+    outputs:
+      sha: ${{ steps.f.outputs.sha }}
+    steps:
+      - id: f
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          DEFAUT: ${{ github.event.repository.default_branch }}
+        run: |
+          set -euo pipefail
+          # API plutôt que gh : gh n'est pas installé sur les runners du NAS.
+          api() { curl -fsS -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' "$@"; }
+          U="$GITHUB_API_URL/repos/$GITHUB_REPOSITORY"
+          pr=$(api "$U/commits/$HEAD_SHA/pulls" | jq -c --arg s "$HEAD_SHA" --arg b "$DEFAUT" \
+            '[.[] | select(.state == "open" and .head.sha == $s and .base.ref == $b and (.draft | not))][0] // empty')
+          [ -n "$pr" ] || { echo "aucune PR ouverte, non brouillon, vers $DEFAUT pour $HEAD_SHA"; exit 0; }
+          n=$(jq -r .number <<<"$pr")
+          [ "$(jq -r .user.login <<<"$pr")" != 'dependabot[bot]' ] || { echo "PR #$n dependabot : fusion humaine"; exit 0; }
+          fichiers=""
+          for page in $(seq 1 30); do
+            f=$(api "$U/pulls/$n/files?per_page=100&page=$page")
+            [ "$(jq length <<<"$f")" -gt 0 ] || break
+            fichiers+=$(jq -r '.[] | "\(.status) \(.filename)"' <<<"$f")$'\n'
+          done
+          sensible=$(grep -E ' (\.github/|Dockerfile$|\.dockerignore$|rust-toolchain)|^removed .*(^|/)tests?/' <<<"$fichiers" || true)
+          if [ -n "$sensible" ]; then
+            echo "::warning::PR #$n touche la CI, le Dockerfile ou supprime un test : fusion humaine requise"
+            printf '### PR #%s non fusionnée automatiquement\n```\n%s\n```\n' "$n" "$sensible" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          # sha = le commit qui a passé la porte : si la branche a bougé entre-temps, GitHub refuse (409).
+          r=$(api -X PUT "$U/pulls/$n/merge" -d "{\"merge_method\":\"squash\",\"sha\":\"$HEAD_SHA\"}")
+          sha=$(jq -r '.sha // empty' <<<"$r")
+          [ -n "$sha" ] || { echo "::error::fusion refusée : $(jq -r .message <<<"$r")"; exit 1; }
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          echo "### PR #$n fusionnée ($sha)" >> "$GITHUB_STEP_SUMMARY"
+
+  # Une fusion faite avec GITHUB_TOKEN ne déclenche aucun workflow : la release est enchaînée ici,
+  # avec la version de release-rust.yml de la branche par défaut.
+  release:
+    needs: fusion-auto
+    if: needs.fusion-auto.outputs.sha != ''
+    uses: ./.github/workflows/release-rust.yml
+    with: { sha: '${{ needs.fusion-auto.outputs.sha }}' }
+    permissions: { contents: write, packages: write }
